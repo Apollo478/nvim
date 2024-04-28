@@ -6,6 +6,20 @@ lsp_zero.on_attach(function(client, bufnr)
     -- see :help lsp-zero-keybindings
     -- to learn the available actions
     lsp_zero.default_keymaps({buffer = bufnr})
+    vim.g.inlay_hints_visible = false
+	local function toggle_inlay_hints()
+		if vim.g.inlay_hints_visible then
+			vim.g.inlay_hints_visible = false
+			vim.lsp.inlay_hint(bufnr, false)
+		else
+			if client.server_capabilities.inlayHintProvider then
+				vim.g.inlay_hints_visible = true
+				vim.lsp.inlay_hint(bufnr, true)
+			else
+				print("no inlay hints available")
+			end
+		end
+	end
 end)
 lsp_zero.on_attach(on_attach)
 lsp_zero.setup()
